@@ -111,24 +111,21 @@
 
   // ── API calls ────────────────────────────────────────────
 
-  function apiFetch(url) {
+  function apiGet(params) {
+    var url = APPS_SCRIPT_URL + '?_t=' + Date.now();
+    for (var k in params) {
+      if (params.hasOwnProperty(k)) {
+        url += '&' + encodeURIComponent(k) + '=' + encodeURIComponent(params[k]);
+      }
+    }
     return fetch(url).then(function (r) { return r.json(); });
-  }
-
-  function apiPost(body) {
-    // Use text/plain to avoid CORS preflight with Apps Script
-    return fetch(APPS_SCRIPT_URL, {
-      method:  'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body:    JSON.stringify(body)
-    }).then(function (r) { return r.json(); });
   }
 
   function fetchLeaderboard() {
     if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'PASTE_YOUR_WEB_APP_URL_HERE') {
       return;
     }
-    apiFetch(APPS_SCRIPT_URL + '?action=list')
+    apiGet({ action: 'list' })
       .then(function (data) {
         if (data.status === 'ok') {
           renderLeaderboard(data.leaderboard);
@@ -178,7 +175,7 @@
     $submitBtn.textContent = 'Sending...';
     setFormMessage('', '');
 
-    apiPost({ action: 'add', name: name, timeDisplay: time })
+    apiGet({ action: 'add', name: name, timeDisplay: time })
       .then(function (data) {
         if (data.status === 'ok') {
           if (data.result === 'slower') {
@@ -208,23 +205,11 @@
 
   // ── Admin mode ────────────────────────────────────────────
 
-  function activateAdmin(password) {
-    return apiPost({ action: 'delete', id: '__ping__', password: password })
-      .then(function (data) {
-        // If wrong password the server returns 'Invalid password.'
-        // Any other response means password was accepted.
-        return data.message !== 'Invalid password.';
-      })
-      .catch(function () { return false; });
-  }
-
   function enterAdminMode() {
     var pw = prompt('Admin password:');
     if (!pw) return;
 
-    // Quick client-side validation before hitting server
-    // (server enforces too — this just avoids pointless network call)
-    apiPost({ action: 'delete', id: '___noop___', password: pw })
+    apiGet({ action: 'delete', id: '___noop___', password: pw })
       .then(function (data) {
         if (data.message === 'Invalid password.') {
           showToast('Wrong password', 'error');
@@ -253,7 +238,7 @@
              }());
     if (!pw) return;
 
-    apiPost({ action: 'delete', id: entryId, password: pw })
+    apiGet({ action: 'delete', id: entryId, password: pw })
       .then(function (data) {
         if (data.status === 'ok') {
           renderLeaderboard(data.leaderboard);

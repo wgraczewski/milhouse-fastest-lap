@@ -89,38 +89,25 @@ function makeResponse(data) {
   return output;
 }
 
-// ── GET handler ───────────────────────────────────────────
+// ── GET handler (handles all actions) ────────────────────
 
 function doGet(e) {
   try {
-    var action = e && e.parameter && e.parameter.action ? e.parameter.action : 'list';
+    var p      = e && e.parameter ? e.parameter : {};
+    var action = p.action || 'list';
+    var sheet  = getSheet();
 
+    // ── List ──────────────────────────────────────────────
     if (action === 'list') {
-      var sheet    = getSheet();
-      var entries  = getAllEntries(sheet);
-      var board    = buildLeaderboard(entries);
+      var entries = getAllEntries(sheet);
+      var board   = buildLeaderboard(entries);
       return makeResponse({ status: 'ok', leaderboard: board });
     }
 
-    return makeResponse({ status: 'error', message: 'Unknown action' });
-
-  } catch (err) {
-    return makeResponse({ status: 'error', message: err.toString() });
-  }
-}
-
-// ── POST handler ──────────────────────────────────────────
-
-function doPost(e) {
-  try {
-    var body   = JSON.parse(e.postData.contents);
-    var action = body.action;
-    var sheet  = getSheet();
-
     // ── Add entry ─────────────────────────────────────────
     if (action === 'add') {
-      var name        = (body.name || '').toString().trim();
-      var timeDisplay = (body.timeDisplay || '').toString().trim();
+      var name        = (p.name || '').toString().trim();
+      var timeDisplay = (p.timeDisplay || '').toString().trim();
 
       if (!name || !timeDisplay) {
         return makeResponse({ status: 'error', message: 'Name and time are required.' });
@@ -134,7 +121,6 @@ function doPost(e) {
       var entries   = getAllEntries(sheet);
       var nameLower = name.toLowerCase();
 
-      // Check for existing entry with same name
       var existingRow = null;
       for (var i = 0; i < entries.length; i++) {
         if (entries[i].name.trim().toLowerCase() === nameLower) {
@@ -145,24 +131,15 @@ function doPost(e) {
 
       if (existingRow) {
         if (newSeconds < existingRow.timeSeconds) {
-          // Improvement — update the existing row
           var range = sheet.getRange(existingRow.rowIndex, 1, 1, 5);
-          range.setValues([[
-            existingRow.id,
-            name,
-            newSeconds,
-            timeDisplay,
-            new Date().toISOString()
-          ]]);
+          range.setValues([[existingRow.id, name, newSeconds, timeDisplay, new Date().toISOString()]]);
           var updated = buildLeaderboard(getAllEntries(sheet));
           return makeResponse({ status: 'ok', result: 'updated', leaderboard: updated });
         } else {
-          // Slower than personal best — ignore
           var board = buildLeaderboard(entries);
           return makeResponse({ status: 'ok', result: 'slower', message: 'A faster time already exists for ' + existingRow.name, leaderboard: board });
         }
       } else {
-        // New driver — append row
         var newId = Utilities.getUuid();
         sheet.appendRow([newId, name, newSeconds, timeDisplay, new Date().toISOString()]);
         var fresh = buildLeaderboard(getAllEntries(sheet));
@@ -172,23 +149,19 @@ function doPost(e) {
 
     // ── Delete entry ──────────────────────────────────────
     if (action === 'delete') {
-      if (body.password !== ADMIN_PASSWORD) {
+      if (p.password !== ADMIN_PASSWORD) {
         return makeResponse({ status: 'error', message: 'Invalid password.' });
       }
 
-      var targetId = (body.id || '').toString().trim();
+      var targetId = (p.id || '').toString().trim();
       var entries2 = getAllEntries(sheet);
       var deleted  = false;
 
-      // Delete all rows with this id (should be one)
-      // Iterate in reverse so row indices stay valid
       var toDelete = [];
       for (var k = 0; k < entries2.length; k++) {
-        if (entries2[k].id === targetId) {
-          toDelete.push(entries2[k].rowIndex);
-        }
+        if (entries2[k].id === targetId) toDelete.push(entries2[k].rowIndex);
       }
-      toDelete.sort(function(a, b) { return b - a; }); // reverse order
+      toDelete.sort(function(a, b) { return b - a; });
       for (var d = 0; d < toDelete.length; d++) {
         sheet.deleteRow(toDelete[d]);
         deleted = true;
@@ -202,7 +175,7 @@ function doPost(e) {
       return makeResponse({ status: 'ok', result: 'deleted', leaderboard: finalBoard });
     }
 
-    return makeResponse({ status: 'error', message: 'Unknown action.' });
+    return makeResponse({ status: 'error', message: 'Unknown action' });
 
   } catch (err) {
     return makeResponse({ status: 'error', message: err.toString() });
