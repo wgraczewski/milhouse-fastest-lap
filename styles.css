@@ -1,0 +1,476 @@
+/* ── Reset & Base ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold:        #c8a96e;
+  --gold-light:  #e0c98a;
+  --gold-dim:    #8a7048;
+  --bg:          #0d0d0d;
+  --surface:     #141414;
+  --surface2:    #1c1c1c;
+  --border:      #2a2a2a;
+  --text:        #ffffff;
+  --text-muted:  #888;
+  --red:         #e8002d;
+  --green:       #00d2be;
+  --font:        'Formula1', 'Barlow Condensed', 'Roboto Condensed', Arial Narrow, sans-serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Barlow:wght@400;500&display=swap');
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Barlow Condensed', Arial Narrow, sans-serif;
+  font-size: 16px;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Header ───────────────────────────────────────────── */
+.site-header {
+  background: #000;
+  border-bottom: 3px solid var(--gold);
+  padding: 16px 20px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-logos {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo-gold {
+  height: 48px;
+  width: auto;
+}
+
+.logo-wordmark {
+  height: 26px;
+  width: auto;
+  /* white PNG — shows correctly on black header */
+}
+
+.header-title {
+  flex: 1;
+  text-align: center;
+}
+
+.header-title h1 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.header-title p {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+/* ── Live dot ─────────────────────────────────────────── */
+.live-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--red);
+  text-transform: uppercase;
+}
+
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
+  animation: pulse 1.4s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.7); }
+}
+
+/* ── Main layout ──────────────────────────────────────── */
+.main {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 16px 12px 80px;
+}
+
+/* ── Entry form card ──────────────────────────────────── */
+.form-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--gold);
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.form-card h2 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+
+.form-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-field.name  { flex: 2; min-width: 140px; }
+.form-field.time  { flex: 1; min-width: 110px; }
+
+.form-field label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.form-field input {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 10px 12px;
+  width: 100%;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+}
+
+.form-field input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.form-field input::placeholder {
+  color: #444;
+  font-weight: 400;
+}
+
+.btn-submit {
+  align-self: flex-end;
+  background: var(--gold);
+  border: none;
+  border-radius: 4px;
+  color: #000;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  padding: 11px 20px;
+  text-transform: uppercase;
+  transition: background 0.15s, transform 0.1s;
+  white-space: nowrap;
+  min-width: 90px;
+}
+
+.btn-submit:active { transform: scale(0.97); }
+.btn-submit:disabled { background: #555; color: #888; cursor: not-allowed; }
+.btn-submit.loading { background: var(--gold-dim); }
+
+.form-message {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin-top: 8px;
+  min-height: 18px;
+  text-transform: uppercase;
+}
+.form-message.success { color: var(--green); }
+.form-message.error   { color: var(--red); }
+.form-message.info    { color: var(--gold); }
+
+/* ── Leaderboard ──────────────────────────────────────── */
+.leaderboard-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.leaderboard-header h2 {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.driver-count {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Column headers */
+.leaderboard-table thead tr {
+  border-bottom: 1px solid var(--border);
+}
+
+.leaderboard-table thead th {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 4px 8px 6px;
+  text-align: left;
+}
+
+.leaderboard-table thead th.col-pos  { width: 44px; text-align: center; }
+.leaderboard-table thead th.col-time { text-align: right; }
+.leaderboard-table thead th.col-gap  { text-align: right; width: 90px; }
+.leaderboard-table thead th.col-del  { width: 36px; }
+
+/* Rows */
+.leaderboard-table tbody tr {
+  border-bottom: 1px solid #1e1e1e;
+  transition: background 0.1s;
+  animation: rowSlideIn 0.3s ease;
+}
+
+@keyframes rowSlideIn {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.leaderboard-table tbody tr:hover {
+  background: var(--surface);
+}
+
+/* P1 row */
+.leaderboard-table tbody tr.pos-1 {
+  background: linear-gradient(90deg, rgba(200,169,110,0.12) 0%, transparent 80%);
+  border-bottom: 1px solid rgba(200,169,110,0.2);
+}
+
+.leaderboard-table tbody td {
+  padding: 12px 8px;
+  vertical-align: middle;
+}
+
+/* Position cell */
+.cell-pos {
+  text-align: center;
+  width: 44px;
+}
+
+.pos-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  width: 28px;
+  height: 28px;
+  border-radius: 3px;
+  background: var(--surface2);
+  color: var(--text-muted);
+}
+
+.pos-1 .pos-number {
+  background: var(--gold);
+  color: #000;
+  font-size: 0.9rem;
+}
+
+/* Driver name cell */
+.cell-name {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.pos-1 .cell-name {
+  color: var(--gold-light);
+}
+
+/* Time cell */
+.cell-time {
+  text-align: right;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.pos-1 .cell-time {
+  color: var(--gold-light);
+}
+
+/* Gap cell */
+.cell-gap {
+  text-align: right;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: #aaa;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.pos-1 .cell-gap {
+  color: var(--gold-dim);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* Admin delete button */
+.cell-del {
+  width: 36px;
+  text-align: center;
+}
+
+.btn-delete {
+  background: transparent;
+  border: 1px solid #333;
+  border-radius: 3px;
+  color: #555;
+  cursor: pointer;
+  font-size: 0.75rem;
+  line-height: 1;
+  padding: 4px 6px;
+  transition: all 0.15s;
+}
+
+.btn-delete:hover {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+}
+
+/* Empty / loading state */
+.leaderboard-empty {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.leaderboard-empty .empty-icon {
+  font-size: 2rem;
+  margin-bottom: 12px;
+  display: block;
+  opacity: 0.4;
+}
+
+/* ── Admin panel ──────────────────────────────────────── */
+.admin-bar {
+  display: none;
+  background: rgba(232,0,45,0.08);
+  border: 1px solid rgba(232,0,45,0.3);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--red);
+  text-align: center;
+}
+
+.admin-bar.visible { display: block; }
+
+/* ── Toast notifications ──────────────────────────────── */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  pointer-events: none;
+}
+
+.toast {
+  background: var(--surface2);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 10px 20px;
+  white-space: nowrap;
+  animation: toastIn 0.25s ease, toastOut 0.3s ease 2.2s forwards;
+  border-left: 4px solid var(--gold);
+}
+
+.toast.error  { border-left-color: var(--red); }
+.toast.success{ border-left-color: var(--green); }
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* ── Responsive tweaks ────────────────────────────────── */
+@media (max-width: 420px) {
+  .site-header { padding: 12px 14px 10px; }
+  .logo-gold   { height: 38px; }
+  .logo-wordmark { height: 20px; }
+  .header-title h1 { font-size: 1rem; }
+
+  .cell-name { font-size: 0.9rem; }
+  .cell-time { font-size: 0.95rem; }
+
+  .form-row { flex-direction: column; }
+  .btn-submit { width: 100%; }
+}
+
+/* ── Scrollbar ────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }

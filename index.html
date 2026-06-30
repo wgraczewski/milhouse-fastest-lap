@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <title>Fastest Lap — Milhouse</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ── Header ─────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="header-logos" id="logo-tap-target">
+      <img src="assets/logo-gold.png"     class="logo-gold"     alt="GT Logo" />
+      <img src="assets/logo-wordmark.png" class="logo-wordmark" alt="Milhouse" />
+    </div>
+
+    <div class="header-title">
+      <h1>Fastest Lap</h1>
+      <p>Live Leaderboard</p>
+    </div>
+
+    <div class="live-badge">
+      <span class="live-dot"></span>
+      LIVE
+    </div>
+  </header>
+
+  <!-- ── Main ───────────────────────────────────────────── -->
+  <main class="main">
+
+    <!-- Admin mode indicator -->
+    <div class="admin-bar" id="admin-bar">
+      ADMIN MODE — delete buttons visible
+    </div>
+
+    <!-- Entry form -->
+    <div class="form-card">
+      <h2>Submit Lap Time</h2>
+      <form id="entry-form" autocomplete="off" novalidate>
+        <div class="form-row">
+          <div class="form-field name">
+            <label for="input-name">Driver Name</label>
+            <input
+              id="input-name"
+              type="text"
+              placeholder="e.g. Max Verstappen"
+              maxlength="40"
+              autocorrect="off"
+              autocapitalize="words"
+              spellcheck="false"
+            />
+          </div>
+          <div class="form-field time">
+            <label for="input-time">Lap Time</label>
+            <input
+              id="input-time"
+              type="text"
+              placeholder="1:23.456"
+              maxlength="10"
+              inputmode="decimal"
+              autocorrect="off"
+              autocapitalize="off"
+            />
+          </div>
+          <button type="submit" class="btn-submit" id="btn-submit">Submit</button>
+        </div>
+        <p class="form-message" id="form-message"></p>
+      </form>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="leaderboard-header">
+      <h2>Classification</h2>
+      <span class="driver-count" id="driver-count"></span>
+    </div>
+
+    <table class="leaderboard-table" aria-label="Lap time leaderboard">
+      <thead>
+        <tr>
+          <th class="col-pos">POS</th>
+          <th>DRIVER</th>
+          <th class="col-time">TIME</th>
+          <th class="col-gap">GAP</th>
+          <th class="col-del"></th>
+        </tr>
+      </thead>
+      <tbody id="lb-tbody">
+        <tr>
+          <td colspan="5">
+            <div class="leaderboard-empty">
+              <span class="empty-icon">&#127937;</span>
+              Loading...
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </main>
+
+  <!-- Toast container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Scripts: config first, then app -->
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
