@@ -5,7 +5,7 @@
 var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwiN9I3DermIKU0h-3KD0o2jYWeoCPFdsZHEV5eAAs0K-VlVGxQA3CRYab74E_8psvBDQ/exec';
 
 // How often (in milliseconds) the leaderboard auto-refreshes.
-var POLL_INTERVAL_MS = 5000; // 5 seconds
+var POLL_INTERVAL_MS = 2000; // 2 seconds
 
 // Event title shown on the page
 var EVENT_TITLE = 'Fastest Lap Challenge';
