@@ -1,108 +1,50 @@
 # Milhouse Fastest Lap — Setup Guide
 
-Follow these four steps once before the event. Takes about 10 minutes total.
+This is a **read-only** leaderboard. Station hosts type times directly into
+Google Sheets; the website just polls and displays the results. There is no
+submission form and no admin/delete mode on the site.
+
+## How it works
+
+Your spreadsheet has 3 station tabs, each with `Name` (col A) and `Lap Time`
+(col B) starting at row 2:
+
+- `DUO STATION`
+- `AMG STATION`
+- `TREE STATION`
+
+The Apps Script backend reads all 3 tabs, keeps each driver's best time
+across stations, ranks them, and computes the gap to P1. The `MH Leaderboard`
+tab in your spreadsheet is just for your own reference — the website does
+**not** read it, so it can't get out of sync with a formula.
+
+**If you rename a station tab or add a 4th station**, update the
+`STATION_SHEETS` list at the top of `apps-script/Code.gs` and redeploy
+(see "Updating the script" below).
 
 ---
 
-## Step 1 — Create the Google Sheet
+## Step 1 — Deploy the Apps Script backend
 
-1. Go to [sheets.google.com](https://sheets.google.com) and create a **new blank spreadsheet**.
-2. Rename it to **"Milhouse Fastest Lap"** (click the title at the top).
-3. Leave the first sheet blank — the script will set up the columns automatically.
+You already have a spreadsheet and a Web App deployed. To pick up the new
+read-only `Code.gs`:
 
----
-
-## Step 2 — Add the Apps Script backend
-
-1. In your Google Sheet, click **Extensions → Apps Script**.
-2. Delete all the starter code in the editor.
-3. Open the file `apps-script/Code.gs` from this project folder and **copy the entire contents**.
-4. Paste it into the Apps Script editor.
-5. Click **Save** (💾 icon or Ctrl/Cmd + S).
-
----
-
-## Step 3 — Deploy the script as a Web App
-
-1. In the Apps Script editor, click **Deploy → New deployment**.
-2. Click the gear icon ⚙ next to "Type" and choose **Web app**.
-3. Fill in the settings:
-   - **Description:** Milhouse Fastest Lap
-   - **Execute as:** Me (your Google account)
-   - **Who has access:** Anyone
-4. Click **Deploy**.
-5. If prompted, click **Authorize access** and follow the Google sign-in prompts (you may see a "This app isn't verified" warning — click **Advanced → Go to Milhouse Fastest Lap (unsafe)** — this is your own script, it's fine).
-6. After deployment, you'll see a **Web app URL** that looks like:
-   ```
-   https://script.google.com/macros/s/AKfycb.../exec
-   ```
-   **Copy this URL** — you'll need it in Step 4.
-
-> **Important:** Any time you change Code.gs you must create a *new deployment* (Deploy → New deployment), not just save. The URL stays the same for updates if you use "Manage deployments → Edit."
-
----
-
-## Step 4 — Wire up the URL and deploy to GitHub Pages
-
-### 4a — Paste the URL into config.js
-
-Open `config.js` and replace the placeholder:
-
-```js
-// BEFORE
-var APPS_SCRIPT_URL = 'PASTE_YOUR_WEB_APP_URL_HERE';
-
-// AFTER (use your actual URL)
-var APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycb.../exec';
-```
-
-You can also change the event title here:
-```js
-var EVENT_TITLE = 'Fastest Lap Challenge';
-```
-
-### 4b — Push to GitHub and enable Pages
-
-1. Create a free account at [github.com](https://github.com) if you don't have one.
-2. Click **+** → **New repository**. Name it `milhouse-fastest-lap`. Keep it **Public**. Click **Create repository**.
-3. On your Mac, open Terminal, navigate to this folder, and run:
-
-```bash
-cd "/Users/wgraczewski/Desktop/Milhouse Fastest Lap"
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/milhouse-fastest-lap.git
-git push -u origin main
-```
-*(replace `YOUR_USERNAME` with your GitHub username)*
-
-4. On GitHub, go to your repo → **Settings → Pages**.
-5. Under **Source**, choose **Deploy from a branch → main → / (root)** → Save.
-6. After ~60 seconds, your site is live at:
-   ```
-   https://YOUR_USERNAME.github.io/milhouse-fastest-lap/
-   ```
-   Share this URL with everyone before the event!
+1. Open your Google Sheet → **Extensions → Apps Script**.
+2. Select all the existing code and delete it.
+3. Open `apps-script/Code.gs` from this project folder and copy the entire contents in.
+4. Click **Save** (💾 or Ctrl/Cmd + S).
+5. **Deploy → Manage deployments** → click the pencil (✎) on your existing deployment → **Version: New version** → **Deploy**.
+   - Using "Manage deployments → Edit" keeps the same Web App URL, so you do **not** need to touch `config.js`.
+   - Do NOT use "New deployment" here — that generates a new URL and breaks the live site until you update `config.js`.
 
 ---
 
 ## How to use during the event
 
-**Submitting a time:**
-- Open the URL on any phone/browser.
-- Enter driver name and lap time in `M:SS.sss` format (e.g. `1:23.456`).
-- Hit Submit — the leaderboard updates in real time for everyone.
-- If a driver submits a new time, only their **fastest** time is kept.
-
-**Admin mode (deleting entries):**
-- On any device, **tap the logos in the header 5 times quickly**.
-- Enter the admin password: `MH99`
-- Red ✕ buttons appear next to each driver — tap to remove them.
-- Admin mode stays active for the browser session.
-
-**Leaderboard auto-refreshes every 5 seconds.**
+- Each station host types `Name` / `Lap Time` (format `M:SS.sss`, e.g. `1:23.456`) directly into their station's tab in Google Sheets.
+- The site polls every 5 seconds and shows each driver's best time across all 3 stations, ranked with gap-to-leader.
+- No form, no login, no admin mode on the site — it's purely a display.
+- The site is already live at `https://wgraczewski.github.io/milhouse-fastest-lap/`.
 
 ---
 
@@ -112,8 +54,8 @@ git push -u origin main
 Milhouse Fastest Lap/
 ├── index.html          — Main page
 ├── styles.css          — All styling
-├── app.js              — Leaderboard logic, form, admin
-├── config.js           — ← Edit this: paste Web App URL here
+├── app.js              — Leaderboard polling + rendering
+├── config.js           — Web App URL + poll interval + title
 ├── assets/
 │   ├── logo-gold.png       — GT shield mark
 │   └── logo-wordmark.png   — Milhouse wordmark (white)
@@ -127,8 +69,8 @@ Milhouse Fastest Lap/
 
 | Symptom | Fix |
 |---|---|
-| "Backend not configured" message | Paste your Web App URL into `config.js` and push to GitHub |
-| Times not showing after submit | Check that the Web App is deployed with "Anyone" access |
+| "No times yet" even though the sheet has data | Check the tab names in `STATION_SHEETS` (top of `Code.gs`) exactly match your sheet's tab names |
+| Times not updating after editing the sheet | Wait up to 5s for the next poll; hard-refresh if still stale |
 | Google auth error on deploy | Click Advanced → proceed — it's your own script |
-| Page not loading at github.io URL | Wait 1–2 min after enabling Pages; hard-refresh (Ctrl+Shift+R) |
-| Duplicate driver names | Names are matched case-insensitively — make sure spelling is consistent |
+| Page not loading at github.io URL | Hard-refresh (Ctrl+Shift+R) |
+| Duplicate driver names across stations | Names are matched case-insensitively; the fastest of the two is kept |

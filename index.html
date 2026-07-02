@@ -13,7 +13,7 @@
 
   <!-- ── Header ─────────────────────────────────────────── -->
   <header class="site-header">
-    <div class="header-logos" id="logo-tap-target">
+    <div class="header-logos">
       <img src="assets/logo-gold.png"     class="logo-gold"     alt="GT Logo" />
       <img src="assets/logo-wordmark.png" class="logo-wordmark" alt="Milhouse" />
     </div>
@@ -32,46 +32,6 @@
   <!-- ── Main ───────────────────────────────────────────── -->
   <main class="main">
 
-    <!-- Admin mode indicator -->
-    <div class="admin-bar" id="admin-bar">
-      ADMIN MODE — delete buttons visible
-    </div>
-
-    <!-- Entry form -->
-    <div class="form-card">
-      <h2>Submit Lap Time</h2>
-      <form id="entry-form" autocomplete="off" novalidate>
-        <div class="form-row">
-          <div class="form-field name">
-            <label for="input-name">Driver Name</label>
-            <input
-              id="input-name"
-              type="text"
-              placeholder="e.g. Max Verstappen"
-              maxlength="40"
-              autocorrect="off"
-              autocapitalize="words"
-              spellcheck="false"
-            />
-          </div>
-          <div class="form-field time">
-            <label for="input-time">Lap Time</label>
-            <input
-              id="input-time"
-              type="text"
-              placeholder="1:23.456"
-              maxlength="10"
-              inputmode="decimal"
-              autocorrect="off"
-              autocapitalize="off"
-            />
-          </div>
-          <button type="submit" class="btn-submit" id="btn-submit">Submit</button>
-        </div>
-        <p class="form-message" id="form-message"></p>
-      </form>
-    </div>
-
     <!-- Leaderboard -->
     <div class="leaderboard-header">
       <h2>Classification</h2>
@@ -85,12 +45,11 @@
           <th>DRIVER</th>
           <th class="col-time">TIME</th>
           <th class="col-gap">GAP</th>
-          <th class="col-del"></th>
         </tr>
       </thead>
       <tbody id="lb-tbody">
         <tr>
-          <td colspan="5">
+          <td colspan="4">
             <div class="leaderboard-empty">
               <span class="empty-icon">&#127937;</span>
               Loading...
@@ -101,9 +60,6 @@
     </table>
 
   </main>
-
-  <!-- Toast container -->
-  <div class="toast-container" id="toast-container"></div>
 
   <!-- Scripts: config first, then app -->
   <script src="config.js"></script>
