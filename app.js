@@ -43,15 +43,23 @@
   var MAX_ROWS   = 10;
   var rowsByName = {}; // driver name (lowercased) -> row element
 
+  function setText(el, value) {
+    value = String(value);
+    if (el.textContent !== value) el.textContent = value;
+  }
+
   function makeRow() {
     var el = document.createElement('div');
-    el.className = 'leaderboard-row';
+    el.className = 'leaderboard-row is-entering';
     el.setAttribute('role', 'row');
     el.innerHTML =
       '<span class="cell-pos" role="cell"><span class="pos-number"></span></span>' +
       '<span class="cell-name" role="cell"></span>' +
       '<span class="cell-time" role="cell"></span>' +
       '<span class="cell-gap" role="cell"></span>';
+    el.addEventListener('animationend', function () {
+      el.classList.remove('is-entering');
+    });
     return el;
   }
 
@@ -81,11 +89,14 @@
         rowsByName[key] = el;
       }
 
-      el.className = 'leaderboard-row' + (entry.position === 1 ? ' pos-1' : '');
-      el.querySelector('.pos-number').textContent = entry.position;
-      el.querySelector('.cell-name').textContent  = entry.name;
-      el.querySelector('.cell-time').textContent  = entry.timeDisplay;
-      el.querySelector('.cell-gap').textContent   = formatGap(entry.gap);
+      var wantLeaderClass = entry.position === 1;
+      if (el.classList.contains('pos-1') !== wantLeaderClass) {
+        el.classList.toggle('pos-1', wantLeaderClass);
+      }
+      setText(el.querySelector('.pos-number'), entry.position);
+      setText(el.querySelector('.cell-name'),  entry.name);
+      setText(el.querySelector('.cell-time'),  entry.timeDisplay);
+      setText(el.querySelector('.cell-gap'),   formatGap(entry.gap));
 
       var wantedNext = prevEl ? prevEl.nextSibling : $tbody.firstChild;
       if (wantedNext !== el) {
