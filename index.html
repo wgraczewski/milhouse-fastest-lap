@@ -11,55 +11,47 @@
 </head>
 <body>
 
-  <!-- ── Header ─────────────────────────────────────────── -->
-  <header class="site-header">
-    <div class="header-logos">
-      <img src="assets/logo-gold.png"     class="logo-gold"     alt="GT Logo" />
-      <img src="assets/logo-wordmark.png" class="logo-wordmark" alt="Milhouse" />
+  <div class="page">
+
+    <!-- ── Banner ───────────────────────────────────────── -->
+    <div class="banner">
+      <img src="assets/banner-fastest-lap.png" alt="Fastest Lap" class="banner-img" />
     </div>
 
-    <div class="header-title">
-      <h1>Fastest Lap</h1>
-      <p>Live Leaderboard</p>
+    <div class="content">
+
+      <!-- ── Sidebar: logos/status + prizes ───────────────── -->
+      <div class="sidebar-top">
+        <div class="header-logos">
+          <img src="assets/logo-wordmark.png" class="logo-wordmark" alt="Milhouse" />
+          <img src="assets/logo-gold.png"     class="logo-gold"     alt="GT Logo" />
+        </div>
+        <div class="live-badge">
+          <span class="live-dot"></span>
+          Qualifying &nbsp;Live until 9 PM
+        </div>
+      </div>
+
+      <div class="prize-list" id="prize-list"></div>
+
+      <!-- ── Leaderboard ──────────────────────────────────── -->
+      <div class="leaderboard-panel">
+        <table class="leaderboard-table" aria-label="Lap time leaderboard">
+          <tbody id="lb-tbody">
+            <tr>
+              <td colspan="4">
+                <div class="leaderboard-empty">
+                  <span class="empty-icon">&#127937;</span>
+                  Loading...
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div>
-
-    <div class="live-badge">
-      <span class="live-dot"></span>
-      LIVE
-    </div>
-  </header>
-
-  <!-- ── Main ───────────────────────────────────────────── -->
-  <main class="main">
-
-    <!-- Leaderboard -->
-    <div class="leaderboard-header">
-      <h2>Classification</h2>
-      <span class="driver-count" id="driver-count"></span>
-    </div>
-
-    <table class="leaderboard-table" aria-label="Lap time leaderboard">
-      <thead>
-        <tr>
-          <th class="col-pos">POS</th>
-          <th>DRIVER</th>
-          <th class="col-time">TIME</th>
-          <th class="col-gap">GAP</th>
-        </tr>
-      </thead>
-      <tbody id="lb-tbody">
-        <tr>
-          <td colspan="4">
-            <div class="leaderboard-empty">
-              <span class="empty-icon">&#127937;</span>
-              Loading...
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
-  </main>
+  </div>
 
   <!-- Scripts: config first, then app -->
   <script src="config.js"></script>

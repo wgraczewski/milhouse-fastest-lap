@@ -5,7 +5,7 @@
   var pollTimer = null;
 
   // ── DOM refs (populated after DOMContentLoaded) ─────────
-  var $tbody, $driverCount;
+  var $tbody, $prizeList;
 
   // ── Utilities ────────────────────────────────────────────
 
@@ -28,13 +28,20 @@
       .replace(/"/g, '&quot;');
   }
 
+  function renderPrizes() {
+    if (!$prizeList || typeof PRIZES === 'undefined') return;
+    $prizeList.innerHTML = PRIZES.map(function (p) {
+      return '<div class="prize-item">' +
+        '<span class="prize-place">' + escHtml(p.place) + '</span>' +
+        '<span class="prize-name">'  + escHtml(p.prize) + '</span>' +
+        '</div>';
+    }).join('');
+  }
+
   // ── Leaderboard rendering ────────────────────────────────
 
   function renderLeaderboard(data) {
     var leaderboard = data || [];
-    if ($driverCount) {
-      $driverCount.textContent = leaderboard.length + ' driver' + (leaderboard.length === 1 ? '' : 's');
-    }
 
     if (leaderboard.length === 0) {
       $tbody.innerHTML =
@@ -86,8 +93,10 @@
   // ── Init ─────────────────────────────────────────────────
 
   document.addEventListener('DOMContentLoaded', function () {
-    $tbody       = document.getElementById('lb-tbody');
-    $driverCount = document.getElementById('driver-count');
+    $tbody     = document.getElementById('lb-tbody');
+    $prizeList = document.getElementById('prize-list');
+
+    renderPrizes();
 
     if (!APPS_SCRIPT_URL || APPS_SCRIPT_URL === 'PASTE_YOUR_WEB_APP_URL_HERE') {
       renderLeaderboard([]);

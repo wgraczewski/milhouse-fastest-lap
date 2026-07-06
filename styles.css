@@ -27,67 +27,71 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── Header ───────────────────────────────────────────── */
-.site-header {
-  background: #000;
-  border-bottom: 3px solid var(--gold);
-  padding: 16px 20px 12px;
+/* ── Page shell ───────────────────────────────────────── */
+.page {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+  flex-direction: column;
+  min-height: 100vh;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 24px 32px 32px;
+}
+
+/* ── Banner ───────────────────────────────────────────── */
+.banner {
+  margin-bottom: 24px;
+}
+
+.banner-img {
+  display: block;
+  width: 100%;
+  max-width: 900px;
+  height: auto;
+}
+
+/* ── Content grid: sidebar + leaderboard ──────────────── */
+.content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "sidebar-top   leaderboard"
+    "prize-list    leaderboard";
+  column-gap: 48px;
+  row-gap: 24px;
+  min-height: 0;
+}
+
+.sidebar-top {
+  grid-area: sidebar-top;
 }
 
 .header-logos {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 14px;
+  margin-bottom: 14px;
 }
 
 .logo-gold {
-  height: 48px;
+  height: 30px;
   width: auto;
 }
 
 .logo-wordmark {
-  height: 26px;
+  height: 18px;
   width: auto;
-  /* white PNG — shows correctly on black header */
 }
 
-.header-title {
-  flex: 1;
-  text-align: center;
-}
-
-.header-title h1 {
-  font-size: 1.25rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--gold);
-  line-height: 1;
-}
-
-.header-title p {
-  font-size: 0.7rem;
-  letter-spacing: 0.2em;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  margin-top: 3px;
-}
-
-/* ── Live dot ─────────────────────────────────────────── */
+/* ── Live status badge ────────────────────────────────── */
 .live-badge {
   display: flex;
   align-items: center;
-  gap: 5px;
-  font-size: 0.65rem;
+  gap: 7px;
+  font-size: 0.7rem;
   font-weight: 700;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.1em;
   color: var(--red);
   text-transform: uppercase;
 }
@@ -97,6 +101,7 @@ html, body {
   height: 7px;
   border-radius: 50%;
   background: var(--red);
+  flex-shrink: 0;
   animation: pulse 1.4s infinite;
 }
 
@@ -105,33 +110,35 @@ html, body {
   50%       { opacity: 0.4; transform: scale(0.7); }
 }
 
-/* ── Main layout ──────────────────────────────────────── */
-.main {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 16px 12px 80px;
+/* ── Prize list ───────────────────────────────────────── */
+.prize-list {
+  grid-area: prize-list;
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.prize-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.prize-place {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.prize-name {
+  font-size: 0.75rem;
+  color: var(--text-muted);
 }
 
 /* ── Leaderboard ──────────────────────────────────────── */
-.leaderboard-header {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-
-.leaderboard-header h2 {
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-}
-
-.driver-count {
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  letter-spacing: 0.1em;
+.leaderboard-panel {
+  grid-area: leaderboard;
 }
 
 .leaderboard-table {
@@ -139,29 +146,7 @@ html, body {
   border-collapse: collapse;
 }
 
-/* Column headers */
-.leaderboard-table thead tr {
-  border-bottom: 1px solid var(--border);
-}
-
-.leaderboard-table thead th {
-  font-size: 0.6rem;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  padding: 4px 8px 6px;
-  text-align: left;
-}
-
-.leaderboard-table thead th.col-pos  { width: 44px; text-align: center; }
-.leaderboard-table thead th.col-time { text-align: right; }
-.leaderboard-table thead th.col-gap  { text-align: right; width: 90px; }
-
-/* Rows */
 .leaderboard-table tbody tr {
-  border-bottom: 1px solid #1e1e1e;
-  transition: background 0.1s;
   animation: rowSlideIn 0.3s ease;
 }
 
@@ -170,87 +155,59 @@ html, body {
   to   { opacity: 1; transform: translateX(0); }
 }
 
-.leaderboard-table tbody tr:hover {
-  background: var(--surface);
-}
-
-/* P1 row */
-.leaderboard-table tbody tr.pos-1 {
-  background: linear-gradient(90deg, rgba(200,169,110,0.12) 0%, transparent 80%);
-  border-bottom: 1px solid rgba(200,169,110,0.2);
-}
-
 .leaderboard-table tbody td {
-  padding: 12px 8px;
+  padding: 14px 8px;
   vertical-align: middle;
 }
 
 /* Position cell */
 .cell-pos {
-  text-align: center;
-  width: 44px;
+  text-align: left;
+  width: 60px;
 }
 
 .pos-number {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.85rem;
+  font-size: 1.8rem;
   font-weight: 800;
-  letter-spacing: 0.02em;
-  width: 28px;
-  height: 28px;
-  border-radius: 3px;
-  background: var(--surface2);
-  color: var(--text-muted);
-}
-
-.pos-1 .pos-number {
-  background: var(--gold);
-  color: #000;
-  font-size: 0.9rem;
+  color: var(--text);
 }
 
 /* Driver name cell */
 .cell-name {
-  font-size: 1.05rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .pos-1 .cell-name {
-  color: var(--gold-light);
+  color: var(--gold);
 }
 
 /* Time cell */
 .cell-time {
   text-align: right;
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.02em;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-}
-
-.pos-1 .cell-time {
-  color: var(--gold-light);
 }
 
 /* Gap cell */
 .cell-gap {
   text-align: right;
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  color: #aaa;
+  color: var(--text-muted);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  padding-left: 20px;
+  width: 110px;
 }
 
 .pos-1 .cell-gap {
-  color: var(--gold-dim);
-  font-size: 0.7rem;
+  color: var(--gold);
+  font-size: 0.8rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -273,14 +230,24 @@ html, body {
 }
 
 /* ── Responsive tweaks ────────────────────────────────── */
-@media (max-width: 420px) {
-  .site-header { padding: 12px 14px 10px; }
-  .logo-gold   { height: 38px; }
-  .logo-wordmark { height: 20px; }
-  .header-title h1 { font-size: 1rem; }
+@media (max-width: 860px) {
+  .page { padding: 16px; }
 
-  .cell-name { font-size: 0.9rem; }
-  .cell-time { font-size: 0.95rem; }
+  .content {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "sidebar-top"
+      "leaderboard"
+      "prize-list";
+  }
+
+  .prize-list { align-self: start; }
+
+  .cell-pos  { width: 40px; }
+  .pos-number { font-size: 1.3rem; }
+  .cell-name { font-size: 1.05rem; }
+  .cell-time { font-size: 1rem; }
+  .cell-gap  { font-size: 0.8rem; padding-left: 10px; }
 }
 
 /* ── Scrollbar ────────────────────────────────────────── */

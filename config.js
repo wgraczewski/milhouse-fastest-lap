@@ -9,3 +9,10 @@ var POLL_INTERVAL_MS = 2000; // 2 seconds
 
 // Event title shown on the page
 var EVENT_TITLE = 'Fastest Lap Challenge';
+
+// Prizes shown in the sidebar (in display order)
+var PRIZES = [
+  { place: '1st Place', prize: 'Logitech G923 Wheel & Pedals' },
+  { place: '2nd Place', prize: 'Logitech G923 Wheel & Pedals' },
+  { place: '3rd Place', prize: 'Professional Gaming Tee and Cap' }
+];
