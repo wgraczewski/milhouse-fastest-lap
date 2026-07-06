@@ -40,7 +40,20 @@
 
   // ── Leaderboard rendering ────────────────────────────────
 
-  var MAX_ROWS = 10;
+  var MAX_ROWS   = 10;
+  var rowsByName = {}; // driver name (lowercased) -> row element
+
+  function makeRow() {
+    var el = document.createElement('div');
+    el.className = 'leaderboard-row';
+    el.setAttribute('role', 'row');
+    el.innerHTML =
+      '<span class="cell-pos" role="cell"><span class="pos-number"></span></span>' +
+      '<span class="cell-name" role="cell"></span>' +
+      '<span class="cell-time" role="cell"></span>' +
+      '<span class="cell-gap" role="cell"></span>';
+    return el;
+  }
 
   function renderLeaderboard(data) {
     var leaderboard = (data || []).slice(0, MAX_ROWS);
@@ -51,23 +64,44 @@
         '<span class="empty-icon">&#127937;</span>' +
         'No times yet — be the first!' +
         '</div>';
+      rowsByName = {};
       return;
     }
 
-    var rows = leaderboard.map(function (entry) {
-      var pos      = entry.position;
-      var posClass = pos === 1 ? 'pos-1' : '';
-      var gapText  = formatGap(entry.gap);
+    var seen   = {};
+    var prevEl = null;
 
-      return '<div class="leaderboard-row ' + posClass + '" role="row">' +
-        '<span class="cell-pos" role="cell"><span class="pos-number">' + pos + '</span></span>' +
-        '<span class="cell-name" role="cell">' + escHtml(entry.name) + '</span>' +
-        '<span class="cell-time" role="cell">' + escHtml(entry.timeDisplay) + '</span>' +
-        '<span class="cell-gap" role="cell">'  + gapText + '</span>' +
-        '</div>';
+    leaderboard.forEach(function (entry) {
+      var key = entry.name.toLowerCase();
+      seen[key] = true;
+
+      var el = rowsByName[key];
+      if (!el) {
+        el = makeRow();
+        rowsByName[key] = el;
+      }
+
+      el.className = 'leaderboard-row' + (entry.position === 1 ? ' pos-1' : '');
+      el.querySelector('.pos-number').textContent = entry.position;
+      el.querySelector('.cell-name').textContent  = entry.name;
+      el.querySelector('.cell-time').textContent  = entry.timeDisplay;
+      el.querySelector('.cell-gap').textContent   = formatGap(entry.gap);
+
+      var wantedNext = prevEl ? prevEl.nextSibling : $tbody.firstChild;
+      if (wantedNext !== el) {
+        $tbody.insertBefore(el, wantedNext);
+      }
+      prevEl = el;
     });
 
-    $tbody.innerHTML = rows.join('');
+    // Drop rows for drivers no longer in the top MAX_ROWS
+    Object.keys(rowsByName).forEach(function (key) {
+      if (!seen[key]) {
+        var el = rowsByName[key];
+        if (el.parentNode) el.parentNode.removeChild(el);
+        delete rowsByName[key];
+      }
+    });
   }
 
   // ── API calls ────────────────────────────────────────────
