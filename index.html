@@ -35,19 +35,13 @@
       <div class="prize-list" id="prize-list"></div>
 
       <!-- ── Leaderboard ──────────────────────────────────── -->
-      <div class="leaderboard-panel">
-        <table class="leaderboard-table" aria-label="Lap time leaderboard">
-          <tbody id="lb-tbody">
-            <tr>
-              <td colspan="4">
-                <div class="leaderboard-empty">
-                  <span class="empty-icon">&#127937;</span>
-                  Loading...
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="leaderboard-panel" role="table" aria-label="Lap time leaderboard">
+        <div class="leaderboard-list" id="lb-tbody">
+          <div class="leaderboard-empty">
+            <span class="empty-icon">&#127937;</span>
+            Loading...
+          </div>
+        </div>
       </div>
 
     </div>

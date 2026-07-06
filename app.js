@@ -45,10 +45,10 @@
 
     if (leaderboard.length === 0) {
       $tbody.innerHTML =
-        '<tr><td colspan="4"><div class="leaderboard-empty">' +
+        '<div class="leaderboard-empty">' +
         '<span class="empty-icon">&#127937;</span>' +
         'No times yet — be the first!' +
-        '</div></td></tr>';
+        '</div>';
       return;
     }
 
@@ -57,12 +57,12 @@
       var posClass = pos === 1 ? 'pos-1' : '';
       var gapText  = formatGap(entry.gap);
 
-      return '<tr class="' + posClass + '">' +
-        '<td class="cell-pos"><span class="pos-number">' + pos + '</span></td>' +
-        '<td class="cell-name">' + escHtml(entry.name) + '</td>' +
-        '<td class="cell-time">' + escHtml(entry.timeDisplay) + '</td>' +
-        '<td class="cell-gap">'  + gapText + '</td>' +
-        '</tr>';
+      return '<div class="leaderboard-row ' + posClass + '" role="row">' +
+        '<span class="cell-pos" role="cell"><span class="pos-number">' + pos + '</span></span>' +
+        '<span class="cell-name" role="cell">' + escHtml(entry.name) + '</span>' +
+        '<span class="cell-time" role="cell">' + escHtml(entry.timeDisplay) + '</span>' +
+        '<span class="cell-gap" role="cell">'  + gapText + '</span>' +
+        '</div>';
     });
 
     $tbody.innerHTML = rows.join('');

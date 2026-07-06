@@ -23,7 +23,7 @@ html, body {
   color: var(--text);
   font-family: 'Barlow Condensed', Arial Narrow, sans-serif;
   font-size: 16px;
-  min-height: 100vh;
+  height: 100%;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -31,21 +31,20 @@ html, body {
 .page {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 24px 32px 32px;
+  height: 100vh;
+  width: 100%;
+  padding: 1.5vw 2vw;
 }
 
 /* ── Banner ───────────────────────────────────────────── */
 .banner {
-  margin-bottom: 24px;
+  margin-bottom: 1.5vw;
+  flex-shrink: 0;
 }
 
 .banner-img {
   display: block;
   width: 100%;
-  max-width: 900px;
   height: auto;
 }
 
@@ -53,13 +52,13 @@ html, body {
 .content {
   flex: 1;
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 22% 1fr;
   grid-template-rows: auto 1fr;
   grid-template-areas:
     "sidebar-top   leaderboard"
     "prize-list    leaderboard";
-  column-gap: 48px;
-  row-gap: 24px;
+  column-gap: 3vw;
+  row-gap: 1.5vw;
   min-height: 0;
 }
 
@@ -70,17 +69,19 @@ html, body {
 .header-logos {
   display: flex;
   align-items: center;
-  gap: 14px;
-  margin-bottom: 14px;
+  gap: 1vw;
+  margin-bottom: 1vw;
 }
 
 .logo-gold {
-  height: 30px;
+  height: 2.2vw;
+  min-height: 22px;
   width: auto;
 }
 
 .logo-wordmark {
-  height: 18px;
+  height: 1.3vw;
+  min-height: 14px;
   width: auto;
 }
 
@@ -88,8 +89,8 @@ html, body {
 .live-badge {
   display: flex;
   align-items: center;
-  gap: 7px;
-  font-size: 0.7rem;
+  gap: 0.5vw;
+  font-size: clamp(0.7rem, 0.9vw, 1.1rem);
   font-weight: 700;
   letter-spacing: 0.1em;
   color: var(--red);
@@ -97,8 +98,10 @@ html, body {
 }
 
 .live-dot {
-  width: 7px;
-  height: 7px;
+  width: 0.6vw;
+  height: 0.6vw;
+  min-width: 7px;
+  min-height: 7px;
   border-radius: 50%;
   background: var(--red);
   flex-shrink: 0;
@@ -116,37 +119,43 @@ html, body {
   align-self: end;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 1vw;
 }
 
 .prize-item {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0.15vw;
 }
 
 .prize-place {
-  font-size: 0.85rem;
+  font-size: clamp(0.85rem, 1.1vw, 1.3rem);
   font-weight: 700;
   color: var(--text);
 }
 
 .prize-name {
-  font-size: 0.75rem;
+  font-size: clamp(0.7rem, 0.9vw, 1.05rem);
   color: var(--text-muted);
 }
 
 /* ── Leaderboard ──────────────────────────────────────── */
 .leaderboard-panel {
   grid-area: leaderboard;
+  min-height: 0;
 }
 
-.leaderboard-table {
-  width: 100%;
-  border-collapse: collapse;
+.leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.leaderboard-table tbody tr {
+.leaderboard-row {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-height: 0;
   animation: rowSlideIn 0.3s ease;
 }
 
@@ -155,26 +164,24 @@ html, body {
   to   { opacity: 1; transform: translateX(0); }
 }
 
-.leaderboard-table tbody td {
-  padding: 14px 8px;
-  vertical-align: middle;
-}
-
 /* Position cell */
 .cell-pos {
   text-align: left;
-  width: 60px;
+  width: 4vw;
+  min-width: 44px;
+  flex-shrink: 0;
 }
 
 .pos-number {
-  font-size: 1.8rem;
+  font-size: clamp(1.6rem, 2.6vw, 3.2rem);
   font-weight: 800;
   color: var(--text);
 }
 
 /* Driver name cell */
 .cell-name {
-  font-size: 1.4rem;
+  flex: 1;
+  font-size: clamp(1.2rem, 2vw, 2.4rem);
   font-weight: 700;
   letter-spacing: 0.02em;
 }
@@ -186,7 +193,7 @@ html, body {
 /* Time cell */
 .cell-time {
   text-align: right;
-  font-size: 1.3rem;
+  font-size: clamp(1.1rem, 1.9vw, 2.2rem);
   font-weight: 700;
   letter-spacing: 0.02em;
   font-variant-numeric: tabular-nums;
@@ -196,26 +203,31 @@ html, body {
 /* Gap cell */
 .cell-gap {
   text-align: right;
-  font-size: 0.95rem;
+  font-size: clamp(0.8rem, 1.2vw, 1.4rem);
   font-weight: 600;
   color: var(--text-muted);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-  padding-left: 20px;
-  width: 110px;
+  padding-left: 1.5vw;
+  width: 8vw;
+  min-width: 90px;
+  flex-shrink: 0;
 }
 
 .pos-1 .cell-gap {
   color: var(--gold);
-  font-size: 0.8rem;
+  font-size: clamp(0.7rem, 1vw, 1.1rem);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 /* Empty / loading state */
 .leaderboard-empty {
-  text-align: center;
-  padding: 48px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   color: var(--text-muted);
   font-size: 0.85rem;
   letter-spacing: 0.1em;
@@ -225,13 +237,12 @@ html, body {
 .leaderboard-empty .empty-icon {
   font-size: 2rem;
   margin-bottom: 12px;
-  display: block;
   opacity: 0.4;
 }
 
 /* ── Responsive tweaks ────────────────────────────────── */
 @media (max-width: 860px) {
-  .page { padding: 16px; }
+  .page { height: auto; min-height: 100vh; padding: 16px; }
 
   .content {
     grid-template-columns: 1fr;
@@ -239,15 +250,19 @@ html, body {
       "sidebar-top"
       "leaderboard"
       "prize-list";
+    row-gap: 20px;
   }
 
+  .leaderboard-panel { min-height: 50vh; }
   .prize-list { align-self: start; }
 
-  .cell-pos  { width: 40px; }
+  .logo-gold      { height: 32px; }
+  .logo-wordmark  { height: 18px; }
+  .cell-pos  { width: 40px; min-width: 40px; }
   .pos-number { font-size: 1.3rem; }
   .cell-name { font-size: 1.05rem; }
   .cell-time { font-size: 1rem; }
-  .cell-gap  { font-size: 0.8rem; padding-left: 10px; }
+  .cell-gap  { font-size: 0.8rem; padding-left: 10px; width: auto; min-width: 80px; }
 }
 
 /* ── Scrollbar ────────────────────────────────────────── */
