@@ -40,8 +40,10 @@
 
   // ── Leaderboard rendering ────────────────────────────────
 
+  var MAX_ROWS = 10;
+
   function renderLeaderboard(data) {
-    var leaderboard = data || [];
+    var leaderboard = (data || []).slice(0, MAX_ROWS);
 
     if (leaderboard.length === 0) {
       $tbody.innerHTML =
