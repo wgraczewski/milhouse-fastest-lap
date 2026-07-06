@@ -76,6 +76,9 @@
       return;
     }
 
+    var stray = $tbody.querySelector('.leaderboard-empty');
+    if (stray) stray.remove();
+
     var seen   = {};
     var prevEl = null;
 
