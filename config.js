@@ -12,7 +12,7 @@ var EVENT_TITLE = 'Fastest Lap Challenge';
 
 // Prizes shown in the sidebar (in display order)
 var PRIZES = [
-  { place: '1st Place', prize: 'Logitech G923 Wheel & Pedals' },
-  { place: '2nd Place', prize: 'Logitech G923 Wheel & Pedals' },
+  { place: '1st Place', prize: 'Logitech Playseat Trophy and Logitech Wheel and Pedal Set' },
+  { place: '2nd Place', prize: 'Milhouse Marble Headset Stand with Wireless Headset' },
   { place: '3rd Place', prize: 'Professional Gaming Tee and Cap' }
 ];
